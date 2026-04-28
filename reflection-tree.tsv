@@ -1,0 +1,71 @@
+id	parentId	type	text	options	target	signal
+
+START	null	start	Good evening. Let’s reflect on your day.			
+
+A1_OPEN	START	question	How would you describe your day overall?	Productive|Tough|Mixed|Frustrating		
+
+A1_D1	A1_OPEN	decision		answer=Productive|Mixed:A1_Q_HIGH;answer=Tough|Frustrating:A1_Q_LOW		
+
+A1_Q_HIGH	A1_D1	question	What helped things go well?	My preparation|Team support|Luck|Adaptability		axis1:internal
+
+A1_Q_LOW	A1_D1	question	When things didn’t go well, what was your instinct?	Fix what I can control|Wait for help|Blame situation|Feel stuck		axis1:external
+
+A1_D2_HIGH	A1_Q_HIGH	decision		answer=My preparation|Adaptability:A1_R_INT;answer=Team support|Luck:A1_R_MIX		
+
+A1_D2_LOW	A1_Q_LOW	decision		answer=Fix what I can control:A1_R_INT;answer=Wait for help|Blame situation|Feel stuck:A1_R_EXT		
+
+A1_R_INT	A1_D2_HIGH	reflection	You showed ownership today. Even small actions reflect internal control.			axis1:internal
+
+A1_R_MIX	A1_D2_HIGH	reflection	Some outcomes depended on others, but you still influenced results.			axis1:mixed
+
+A1_R_EXT	A1_D2_LOW	reflection	It felt like things were outside your control. But there was at least one decision you made.			axis1:external
+
+BRIDGE_1_2	A1_R_INT	bridge	Let’s shift from control to contribution.		A2_OPEN	
+BRIDGE_1_2B	A1_R_EXT	bridge	Let’s shift from control to contribution.		A2_OPEN	
+
+A2_OPEN	null	question	Think about your interactions today. What stands out?	I helped someone|I did extra work|I felt under-recognized|Others didn’t perform		
+
+A2_D1	A2_OPEN	decision		answer=I helped someone|I did extra work:A2_Q_CONTRIB;answer=I felt under-recognized|Others didn’t perform:A2_Q_ENTITLE		
+
+A2_Q_CONTRIB	A2_D1	question	Why did you go beyond your role?	I wanted to help|It felt right|Team needed it|Habit		axis2:contribution
+
+A2_Q_ENTITLE	A2_D1	question	What bothered you most?	Lack of credit|Others not working|Unfair expectations|No support		axis2:entitlement
+
+A2_D2	A2_Q_CONTRIB	decision		answer=I wanted to help|It felt right:A2_R_HIGH;answer=Team needed it|Habit:A2_R_MED		
+
+A2_D3	A2_Q_ENTITLE	decision		answer=Lack of credit|Unfair expectations:A2_R_ENT;answer=Others not working|No support:A2_R_EXT		
+
+A2_R_HIGH	A2_D2	reflection	You focused on giving today. That builds long-term trust and impact.			axis2:contribution
+
+A2_R_MED	A2_D2	reflection	You contributed where needed. Consider making it more intentional.			axis2:neutral
+
+A2_R_ENT	A2_D3	reflection	You expected recognition today. That’s natural, but contribution often precedes reward.			axis2:entitlement
+
+A2_R_EXT	A2_D3	reflection	Others affected your experience. Still, what could you influence next time?			axis2:external
+
+BRIDGE_2_3	A2_R_HIGH	bridge	Now let’s expand perspective.		A3_OPEN	
+BRIDGE_2_3B	A2_R_ENT	bridge	Now let’s expand perspective.		A3_OPEN	
+
+A3_OPEN	null	question	Who comes to mind when you think of today’s challenges?	Just me|My team|A colleague|Customer		
+
+A3_D1	A3_OPEN	decision		answer=Just me:A3_SELF;answer=My team:A3_TEAM;answer=A colleague:A3_COL;answer=Customer:A3_CUST		
+
+A3_SELF	A3_D1	question	What was your main concern?	My stress|My tasks|My deadlines		axis3:self
+
+A3_TEAM	A3_D1	question	How did the team impact you?	Shared load|Conflicts|Support		axis3:team
+
+A3_COL	A3_D1	question	What about that colleague?	They struggled|They helped|Neutral		axis3:other
+
+A3_CUST	A3_D1	question	What mattered about the customer?	Their need|Their feedback|Impact		axis3:wide
+
+A3_R_SELF	A3_SELF	reflection	Your focus stayed inward today. That’s valid — but perspective can reduce stress.			axis3:self
+
+A3_R_TEAM	A3_TEAM	reflection	You saw things at a team level. That’s a broader lens.			axis3:team
+
+A3_R_COL	A3_COL	reflection	You noticed others’ experience. That’s empathy in action.			axis3:other
+
+A3_R_CUST	A3_CUST	reflection	You connected your work to real impact. That creates meaning.			axis3:wide
+
+SUMMARY	null	summary	Today: {axis1.dominant} control, {axis2.dominant} contribution, {axis3.dominant} perspective.			
+
+END	SUMMARY	end	Good work reflecting. See you tomorrow.			
